@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>WebTransport – Eine moderne Alternative zu WebSockets</title>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.6.1/reveal.min.css" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.6.1/theme/black.min.css" id="theme" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+
+<style>
+  :root {
+    --bg: #0E1521;
+    --bg-alt: #141D2E;
+    --card: #1C2740;
+    --teal: #2DE0C6;
+    --coral: #FF6B4A;
+    --white: #F5F7FA;
+    --gray: #9AA5B8;
+  }
+
+  .reveal { font-family: 'Inter', sans-serif; color: var(--white); }
+  .reveal .slides section { text-align: left; }
+  .reveal h1, .reveal h2, .reveal h3 {
+    font-family: 'JetBrains Mono', monospace;
+    text-transform: none;
+    letter-spacing: -0.01em;
+  }
+
+  .slide-bg { background: var(--bg); }
+  .slide-bg-alt { background: var(--bg-alt); }
+
+  .kicker {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.55em;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    color: var(--teal);
+    text-transform: uppercase;
+    margin-bottom: 0.3em;
+  }
+
+  h2.slide-title {
+    font-size: 1.5em;
+    font-weight: 800;
+    color: var(--white);
+    margin-bottom: 0.6em;
+  }
+
+  .body-text { font-size: 0.62em; line-height: 1.55; color: var(--white); }
+  .subtle { color: var(--gray); }
+  .teal { color: var(--teal); }
+  .coral { color: var(--coral); }
+
+  .card {
+    background: var(--card);
+    border-radius: 6px;
+    padding: 0.6em 0.8em;
+  }
+
+  .grid { display: grid; gap: 0.5em; }
+  .grid-2 { grid-template-columns: 1fr 1fr; }
+  .grid-3 { grid-template-columns: repeat(3, 1fr); }
+  .grid-5 { grid-template-columns: repeat(5, 1fr); }
+
+  .badge-list { list-style: none; padding: 0; margin: 0; }
+  .badge-list li {
+    font-size: 0.6em;
+    padding-left: 1em;
+    position: relative;
+    margin-bottom: 0.55em;
+    line-height: 1.4;
+  }
+  .badge-list li::before {
+    content: "";
+    position: absolute; left: 0; top: 0.5em;
+    width: 6px; height: 6px; border-radius: 50%;
+    background: var(--teal);
+  }
+  .badge-list.coral li::before { background: var(--coral); }
+
+  .stack-box {
+    border-radius: 4px;
+    padding: 0.5em 0.8em;
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 700;
+    font-size: 0.55em;
+    text-align: center;
+    margin-bottom: 0.35em;
+  }
+
+  .flow-box {
+    border-radius: 4px;
+    padding: 0.5em;
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 700;
+    font-size: 0.55em;
+    text-align: center;
+  }
+
+  .col-head {
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 800;
+    font-size: 0.8em;
+    text-align: center;
+    padding: 0.5em;
+    border-radius: 6px 6px 0 0;
+    color: var(--bg);
+  }
+
+  .step-num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 1.6em;
+    font-weight: 800;
+    color: var(--teal);
+    margin-bottom: 0.2em;
+  }
+
+  .reveal section img { border: none; box-shadow: none; background: none; }
+</style>
+</head>
+
+<body>
+<div class="reveal">
+<div class="slides">
+
+<!-- 1: TITLE -->
+<section class="slide-bg">
+  <div style="margin-top:0.4em;">
+    <h1 style="font-size:2.4em; font-weight:800; margin-bottom:0.15em;">WebTransport</h1>
+    <p style="font-size:0.9em; color:var(--teal); margin-bottom:1.4em;">Eine moderne Alternative zu WebSockets</p>
+    <div style="width:60%;">
+      <div class="stack-box" style="background:var(--teal); color:var(--bg); border:1px solid var(--teal);">HTTP/3</div>
+      <div class="stack-box" style="background:var(--card); color:var(--white); border:1px solid var(--teal);">QUIC</div>
+      <div class="stack-box" style="background:var(--card); color:var(--white); border:1px solid var(--teal);">UDP</div>
+    </div>
+    <p class="subtle" style="font-size:0.5em; margin-top:2em;">Web Technologien · Weaving the Web · Sommersemester 2026</p>
+  </div>
+</section>
+
+<!-- 2: KURZUEBERSICHT -->
+<section class="slide-bg-alt">
+  <div class="kicker">Kurzübersicht</div>
+  <h2 class="slide-title">Was dich erwartet</h2>
+  <div class="grid" style="gap:0.5em;">
+    <div class="card grid grid-2" style="align-items:center;">
+      <span class="teal body-text" style="font-weight:700;">Dauer</span>
+      <span class="body-text">120 Minuten</span>
+    </div>
+    <div class="card grid grid-2" style="align-items:center;">
+      <span class="teal body-text" style="font-weight:700;">Format</span>
+      <span class="body-text">Theorie-Impulse + 2 praktische Übungen</span>
+    </div>
+    <div class="card grid grid-2" style="align-items:center;">
+      <span class="teal body-text" style="font-weight:700;">Mitbringen</span>
+      <span class="body-text">Laptop, aktuelles Chrome/Edge, Node.js installiert</span>
+    </div>
+    <div class="card grid grid-2" style="align-items:center;">
+      <span class="teal body-text" style="font-weight:700;">Danach kannst du</span>
+      <span class="body-text">einschätzen, wann WebTransport statt WebSockets sinnvoll ist, und selbst Stream- &amp; Datagram-Kanäle bauen</span>
+    </div>
+  </div>
+</section>
+
+<!-- 3: EINFUEHRUNG -->
+<section class="slide-bg">
+  <div class="kicker">Einführung</div>
+  <h2 class="slide-title">Warum jetzt über WebTransport reden?</h2>
+  <div class="grid grid-2" style="gap:1em;">
+    <div>
+      <p class="body-text">WebSockets (RFC 6455) sind seit 2011 der Standard für bidirektionale Echtzeit-Kommunikation im Web. Sie basieren auf TCP – und genau das wird bei modernen Anforderungen (mehrere parallele Datenströme, sehr geringe Latenz) zum Flaschenhals.</p>
+      <p class="body-text teal" style="margin-top:1em;">Seit März 2026 hat WebTransport mit Safari 26.4 den letzten großen Browser bekommen und gilt als „Baseline“ – läuft also produktionsreif in allen aktuellen Browsern.</p>
+    </div>
+    <div class="card">
+      <p class="body-text" style="font-weight:700; margin-bottom:0.5em;">Treiber &amp; Status</p>
+      <ul class="badge-list">
+        <li>Spec-Editoren: Google, Mozilla, Apple</li>
+        <li>Entwickelt mit IETF WEBTRANS Working Group</li>
+        <li>Status: W3C Working Draft (März 2026)</li>
+        <li>Browser: Chrome, Edge, Firefox, Safari 26.4+</li>
+        <li>Bisher: geringe Produktions-Adoption</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- 4: REISEROUTE -->
+<section class="slide-bg-alt">
+  <div class="kicker">Reiseroute</div>
+  <h2 class="slide-title">So läuft der Workshop ab</h2>
+  <div class="grid grid-5" style="gap:0.5em;">
+    <div class="card" style="min-height:220px;">
+      <div class="step-num">01</div>
+      <p class="body-text" style="font-weight:700;">Warum WebSockets an Grenzen stoßen</p>
+      <p class="subtle body-text" style="font-size:0.85em; margin-top:1em;">TCP, Head-of-Line-Blocking</p>
+    </div>
+    <div class="card" style="min-height:220px;">
+      <div class="step-num">02</div>
+      <p class="body-text" style="font-weight:700;">Wie WebTransport das löst</p>
+      <p class="subtle body-text" style="font-size:0.85em; margin-top:1em;">QUIC, Streams vs. Datagrams</p>
+    </div>
+    <div class="card" style="min-height:220px;">
+      <div class="step-num">03</div>
+      <p class="body-text" style="font-weight:700;">Praxis 1: Stream-Echo</p>
+      <p class="subtle body-text" style="font-size:0.85em; margin-top:1em;">Eigener WebTransport-Server &amp; Client</p>
+    </div>
+    <div class="card" style="min-height:220px;">
+      <div class="step-num">04</div>
+      <p class="body-text" style="font-weight:700;">Praxis 2: Datagrams</p>
+      <p class="subtle body-text" style="font-size:0.85em; margin-top:1em;">Paketverlust simulieren &amp; vergleichen</p>
+    </div>
+    <div class="card" style="min-height:220px;">
+      <div class="step-num">05</div>
+      <p class="body-text" style="font-weight:700;">Recap &amp; Ausblick</p>
+      <p class="subtle body-text" style="font-size:0.85em; margin-top:1em;">Wann WebTransport, wann nicht</p>
+    </div>
+  </div>
+</section>
+
+<!-- 5: HOL BLOCKING -->
+<section class="slide-bg">
+  <div class="kicker">Theorie · Grundlagen</div>
+  <h2 class="slide-title">Das Problem: Head-of-Line-Blocking</h2>
+  <p class="body-text" style="margin-bottom:1em;">TCP garantiert eine strikte Reihenfolge aller Bytes einer Verbindung. Geht ein Paket verloren, müssen alle nachfolgenden Pakete warten – auch wenn sie logisch zu einem anderen Datenstrom gehören.</p>
+
+  <p class="subtle body-text" style="font-weight:700; margin-bottom:0.4em;">TCP / WebSocket – 1 Verbindung</p>
+  <div style="display:flex; gap:0.4em; align-items:center; margin-bottom:1em;">
+    <div class="flow-box" style="background:var(--teal); color:var(--bg); width:80px;">A1</div>
+    <div class="flow-box" style="background:var(--coral); color:var(--bg); width:80px;">A2 ✕</div>
+    <div class="flow-box" style="background:var(--card); color:var(--gray); width:80px;">A3</div>
+    <div class="flow-box" style="background:var(--card); color:var(--gray); width:80px;">B1</div>
+    <span class="body-text coral" style="font-style:italic; margin-left:0.8em;">Alles wartet, bis A2 neu übertragen wurde – auch B1</span>
+  </div>
+
+  <p class="subtle body-text" style="font-weight:700; margin-bottom:0.4em;">QUIC / WebTransport – mehrere Streams</p>
+  <div style="display:flex; gap:0.4em; align-items:center; margin-bottom:0.4em;">
+    <span class="subtle body-text" style="width:80px;">Stream A</span>
+    <div class="flow-box" style="background:var(--teal); color:var(--bg); width:80px;">A1</div>
+    <div class="flow-box" style="background:var(--coral); color:var(--bg); width:80px;">A2 ✕</div>
+    <div class="flow-box" style="background:var(--card); color:var(--gray); width:80px;">A3</div>
+  </div>
+  <div style="display:flex; gap:0.4em; align-items:center;">
+    <span class="subtle body-text" style="width:80px;">Stream B</span>
+    <div class="flow-box" style="background:var(--teal); color:var(--bg); width:80px;">B1</div>
+    <div class="flow-box" style="background:var(--teal); color:var(--bg); width:80px;">B2</div>
+    <div class="flow-box" style="background:var(--teal); color:var(--bg); width:80px;">B3</div>
+    <span class="body-text teal" style="font-style:italic; margin-left:0.8em;">Stream B läuft unabhängig weiter, obwohl A2 verloren ging</span>
+  </div>
+</section>
+
+<!-- 6: STREAMS VS DATAGRAMS -->
+<section class="slide-bg-alt">
+  <div class="kicker">Theorie · Grundlagen</div>
+  <h2 class="slide-title">Streams vs. Datagrams</h2>
+  <div class="grid grid-2" style="gap:1em;">
+    <div>
+      <div class="col-head" style="background:var(--teal);">Streams</div>
+      <div class="card" style="border-radius:0 0 6px 6px;">
+        <ul class="badge-list">
+          <li>Zuverlässig &amp; geordnet</li>
+          <li>Wie eine TCP-Verbindung</li>
+          <li>Neuübertragung bei Verlust</li>
+          <li>Für: Chat-Nachrichten, Dateien, alles was vollständig ankommen muss</li>
+        </ul>
+      </div>
+    </div>
+    <div>
+      <div class="col-head" style="background:var(--coral);">Datagrams</div>
+      <div class="card" style="border-radius:0 0 6px 6px;">
+        <ul class="badge-list coral">
+          <li>Unzuverlässig &amp; ungeordnet</li>
+          <li>Wie UDP</li>
+          <li>Kein Overhead durch Neuübertragung</li>
+          <li>Für: Positions-Updates, Live-Sensordaten, Video-Frames — „nur der neueste Wert zählt“</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 7: WANN WEBSOCKETS -->
+<section class="slide-bg">
+  <div class="kicker">Theorie · Einordnung</div>
+  <h2 class="slide-title">Wann bleibt WebSocket die bessere Wahl?</h2>
+  <ul class="badge-list" style="font-size:1.1em;">
+    <li>Maximale Kompatibilität nötig (ältere Umgebungen, restriktive Firewalls/Proxys)</li>
+    <li>Einfacher Anwendungsfall ohne Multiplexing- oder Latenzanforderungen</li>
+    <li>Ausgereiftere, breiter getestete Server-Bibliotheken und Tooling</li>
+    <li>Team-Erfahrung &amp; bestehende Infrastruktur sprechen dagegen, etwas Neues einzuführen</li>
+  </ul>
+  <p class="body-text teal" style="font-style:italic; margin-top:1.5em;">Faustregel: WebSocket = sicherer Standard. WebTransport = gezielte Wahl bei Multiplexing- oder Latenz-Anforderungen.</p>
+</section>
+
+<!-- 8: PRAXIS 1 -->
+<section class="slide-bg-alt">
+  <div class="kicker">Praxisteil 1 · ~35 Min</div>
+  <h2 class="slide-title">Aufgabe: Stream-Echo-Server</h2>
+  <div class="grid grid-2" style="gap:1em;">
+    <div>
+      <p class="teal body-text" style="font-weight:700;">Ziel</p>
+      <p class="body-text">Einen WebTransport-Server in Node.js aufsetzen, der über einen bidirektionalen Stream Nachrichten vom Client entgegennimmt und zurücksendet (Echo).</p>
+      <p class="teal body-text" style="font-weight:700; margin-top:1em;">Schritte</p>
+      <ul class="badge-list">
+        <li>Zertifikat generieren (Boilerplate liegt bereit)</li>
+        <li>server.js: Session annehmen, Stream öffnen</li>
+        <li>Client: Verbindung aufbauen, Nachricht senden</li>
+        <li>Im Browser (Chrome) testen</li>
+      </ul>
+    </div>
+    <div class="card">
+      <p class="body-text" style="font-weight:700;">⏱ 25 Min. Bearbeitung<br>+ 10 Min. gemeinsamer Review</p>
+      <p class="subtle body-text" style="margin-top:1em;">Boilerplate &amp; Musterlösung liegen im Workshop-Repo bereit (exercise1-streams).</p>
+    </div>
+  </div>
+</section>
+
+<!-- 9: PRAXIS 2 -->
+<section class="slide-bg">
+  <div class="kicker">Praxisteil 2 · ~35 Min</div>
+  <h2 class="slide-title">Aufgabe: Datagrams &amp; simulierter Paketverlust</h2>
+  <div class="grid grid-2" style="gap:1em;">
+    <div>
+      <p class="coral body-text" style="font-weight:700;">Ziel</p>
+      <p class="body-text">Ein Live-Dashboard bauen, das Positions-/Sensordaten per Datagram überträgt – und den Unterschied zu Streams sichtbar machen, wenn künstlich Pakete verloren gehen.</p>
+      <p class="coral body-text" style="font-weight:700; margin-top:1em;">Schritte</p>
+      <ul class="badge-list coral">
+        <li>Datagram-Kanal im bestehenden Server ergänzen</li>
+        <li>Client sendet Positionswerte in Intervallen</li>
+        <li>Verlustsimulation aktivieren &amp; Verhalten beobachten</li>
+        <li>Vergleich: gleiche Aufgabe mit Stream statt Datagram</li>
+      </ul>
+    </div>
+    <div class="card">
+      <p class="body-text" style="font-weight:700;">⏱ 25 Min. Bearbeitung<br>+ 10 Min. gemeinsamer Review</p>
+      <p class="subtle body-text" style="margin-top:1em;">Bonus für Schnelle: Paketverlust-Rate über einen Regler live einstellbar machen.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 10: RECAP -->
+<section class="slide-bg-alt">
+  <div class="kicker">Recap</div>
+  <h2 class="slide-title">Was bleibt hängen?</h2>
+  <ul class="badge-list" style="font-size:1.05em;">
+    <li>WebSockets: bewährt, universell, aber TCP-basiert und damit anfällig für Head-of-Line-Blocking</li>
+    <li>WebTransport: baut auf HTTP/3 &amp; QUIC, erlaubt echte Multiplexing- und Latenzvorteile</li>
+    <li>Streams = zuverlässig &amp; geordnet · Datagrams = schnell &amp; verlusttolerant</li>
+    <li>Seit März 2026 Baseline-Support in allen großen Browsern – aber Spec ist noch Working Draft</li>
+  </ul>
+</section>
+
+<!-- 11: AUSBLICK -->
+<section class="slide-bg">
+  <div class="kicker">Ausblick</div>
+  <h2 class="slide-title">Wohin entwickelt sich das Thema?</h2>
+  <div class="grid grid-3" style="gap:0.7em;">
+    <div class="card">
+      <p class="teal body-text" style="font-weight:700;">Media over QUIC (MOQ)</p>
+      <p class="body-text" style="margin-top:0.5em;">Low-Latency-Streaming-Standard, baut direkt auf WebTransport auf – aktuell noch IETF-Draft</p>
+    </div>
+    <div class="card">
+      <p class="teal body-text" style="font-weight:700;">WebCodecs + WebTransport</p>
+      <p class="body-text" style="margin-top:0.5em;">Volle Kontrolle über die Media-Pipeline: eigenes Encoding, eigener Transport</p>
+    </div>
+    <div class="card">
+      <p class="teal body-text" style="font-weight:700;">Spec-Reifung</p>
+      <p class="body-text" style="margin-top:0.5em;">W3C plant Candidate-Recommendation-Status im Lauf von 2026, breite Produktionsreife eher 2027</p>
+    </div>
+  </div>
+</section>
+
+<!-- 12: ABSCHLUSS -->
+<section class="slide-bg-alt">
+  <h1 style="font-size:2em; font-weight:800;">Danke!</h1>
+  <p class="teal" style="font-size:0.8em; margin-bottom:1em;">Fragen, Feedback &amp; weiterführende Ressourcen</p>
+  <ul class="badge-list">
+    <li>Workshop-Repo mit Boilerplate &amp; Musterlösung</li>
+    <li>MDN: WebTransport API</li>
+    <li>FOSDEM 2026: „Intro to WebTransport – The next WebSocket?“ (Max Inden)</li>
+  </ul>
+</section>
+
+</div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.6.1/reveal.min.js"></script>
+<script>
+  Reveal.initialize({
+    hash: true,
+    controls: true,
+    progress: true,
+    center: false,
+    transition: 'fade',
+    width: 1280,
+    height: 720,
+    margin: 0.06
+  });
+</script>
+</body>
+</html>

@@ -83,25 +83,10 @@ To try packet loss in the datagram bonus:
 LOSS_RATE=0.3 npm start
 ```
 
-## How it works (two things that trip everyone up)
+## Design notes
 
-**Self-signed cert without browser flags.** The server computes the SHA-256 of its
-certificate and serves it at `/cert-hash`. The clients fetch it and pass it as
-`serverCertificateHashes` to `new WebTransport(...)`. That's why you don't need to launch
-Chrome with any special flags.
-
-**Connect to `127.0.0.1`, not `localhost`.** The server binds IPv4. `localhost` resolves
-to IPv6 (`::1`) first in Chromium, where nothing is listening → `ERR_CONNECTION_REFUSED`.
-All client URLs therefore use `127.0.0.1`.
-
-## Troubleshooting
-
-| Symptom | Cause / fix |
-|---|---|
-| `npm install` fails cloning `quiche.googlesource.com` | No network to Google git or no build toolchain. Install build tools; retry on an open network. |
-| `net::ERR_CONNECTION_REFUSED` | You're connecting to `localhost` (IPv6). Use `127.0.0.1`. |
-| `WebTransportError: Opening handshake failed` | Cert not trusted. Ensure the server serves `/cert-hash`, the client uses `serverCertificateHashes`, and the cert is ECDSA/P-256 with ≤ 14 days validity. |
-| Nothing at `https://127.0.0.1:4433` in the browser | Expected — WebTransport is UDP/QUIC; a normal (TCP) page load shows nothing. |
-| `datagrams.writable is deprecated` (server log) | Use `session.datagrams.createWritable()` instead of `.writable`. |
-| `[echo] Session beendet` on the server | Normal — a client closed the tab / navigated away (clean close, code 0). |
+- **Self-signed cert without browser flags:** the server computes the SHA-256 of its
+  certificate and serves it at `/cert-hash`; the clients fetch it and pass it as
+  `serverCertificateHashes` to `new WebTransport(...)`. No Chrome launch flags needed.
+- **Clients connect to `127.0.0.1`** (the server binds IPv4), not `localhost`.
 ```
