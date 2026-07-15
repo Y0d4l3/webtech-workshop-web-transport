@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <title>Bonus: Datagrams &amp; Paketverlust</title>
+  <style>
+    body { font-family: system-ui, sans-serif; max-width: 640px; margin: 40px auto; }
+    #board { position: relative; width: 400px; height: 300px; border: 1px solid #ccc; background: #fafafa; }
+    #dot { position: absolute; width: 16px; height: 16px; border-radius: 50%; background: teal; }
+    #stats { font-family: monospace; margin-top: 12px; }
+  </style>
+</head>
+<body>
+  <h1>Bonus: Datagrams &amp; Paketverlust</h1>
+  <p>Status: <span id="status">nicht verbunden</span></p>
+  <p>Bewege die Maus im Kasten -- die Position wird per Datagram an den Server gesendet
+     und an alle anderen verbundenen Clients weiterverteilt.</p>
+  <div id="board"><div id="dot"></div></div>
+  <div id="stats">
+    gesendet: <span id="sent">0</span> &middot;
+    empfangen: <span id="received">0</span>
+  </div>
+  <script type="module" src="exercise2-datagrams.js"></script>
+</body>
+</html>
