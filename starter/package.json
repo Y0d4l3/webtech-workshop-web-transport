@@ -1,0 +1,16 @@
+{
+  "name": "webtransport-workshop-starter",
+  "version": "1.0.0",
+  "description": "Starter (mit TODOs) - Workshop 'WebTransport als Alternative zu WebSockets'",
+  "type": "module",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "ws-demo": "node websocket-echo/ws-server.js"
+  },
+  "dependencies": {
+    "@fails-components/webtransport": "^1.6.3",
+    "@fails-components/webtransport-transport-http3-quiche": "^1.6.3",
+    "ws": "^8.18.0"
+  }
+}
