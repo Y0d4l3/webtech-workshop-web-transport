@@ -21,6 +21,9 @@
     --gray: #9AA5B8;
   }
 
+  /* Letterbox / viewport area matches the deck so it never shows black bars. */
+  html, body, .reveal-viewport { background: var(--bg); }
+
   .reveal { font-family: 'Inter', sans-serif; color: var(--white); }
   .reveal .slides section { text-align: left; }
   .reveal h1, .reveal h2, .reveal h3 {
@@ -28,9 +31,6 @@
     text-transform: none;
     letter-spacing: -0.01em;
   }
-
-  .slide-bg { background: var(--bg); }
-  .slide-bg-alt { background: var(--bg-alt); }
 
   .kicker {
     font-family: 'JetBrains Mono', monospace;
@@ -65,21 +65,22 @@
   .grid-3 { grid-template-columns: repeat(3, 1fr); }
   .grid-5 { grid-template-columns: repeat(5, 1fr); }
 
-  .badge-list { list-style: none; padding: 0; margin: 0; }
-  .badge-list li {
+  /* .reveal prefix so these beat the theme's ".reveal ul" defaults (no double bullets). */
+  .reveal .badge-list { list-style: none; padding: 0; margin: 0; }
+  .reveal .badge-list li {
     font-size: 0.6em;
     padding-left: 1em;
     position: relative;
     margin-bottom: 0.55em;
     line-height: 1.4;
   }
-  .badge-list li::before {
+  .reveal .badge-list li::before {
     content: "";
     position: absolute; left: 0; top: 0.5em;
     width: 6px; height: 6px; border-radius: 50%;
     background: var(--teal);
   }
-  .badge-list.coral li::before { background: var(--coral); }
+  .reveal .badge-list.coral li::before { background: var(--coral); }
 
   .stack-box {
     border-radius: 4px;
@@ -99,6 +100,8 @@
     font-size: 0.55em;
     text-align: center;
   }
+
+  .flow-row { display: flex; gap: 0.4em; align-items: center; flex-wrap: wrap; }
 
   .col-head {
     font-family: 'JetBrains Mono', monospace;
@@ -127,7 +130,7 @@
 <div class="slides">
 
 <!-- 1: TITLE -->
-<section class="slide-bg">
+<section data-background-color="#0E1521">
   <div style="margin-top:0.4em;">
     <h1 style="font-size:2.4em; font-weight:800; margin-bottom:0.15em;">WebTransport</h1>
     <p style="font-size:0.9em; color:var(--teal); margin-bottom:1.4em;">Eine moderne Alternative zu WebSockets</p>
@@ -141,7 +144,7 @@
 </section>
 
 <!-- 2: KURZUEBERSICHT -->
-<section class="slide-bg-alt">
+<section data-background-color="#141D2E">
   <div class="kicker">Kurzübersicht</div>
   <h2 class="slide-title">Was dich erwartet</h2>
   <div class="grid" style="gap:0.5em;">
@@ -151,7 +154,7 @@
     </div>
     <div class="card grid grid-2" style="align-items:center;">
       <span class="teal body-text" style="font-weight:700;">Format</span>
-      <span class="body-text">Theorie-Impulse + 2 praktische Übungen</span>
+      <span class="body-text">Theorie-Impulse + 2 praktische Übungen + Bonus</span>
     </div>
     <div class="card grid grid-2" style="align-items:center;">
       <span class="teal body-text" style="font-weight:700;">Mitbringen</span>
@@ -165,7 +168,7 @@
 </section>
 
 <!-- 3: EINFUEHRUNG -->
-<section class="slide-bg">
+<section data-background-color="#0E1521">
   <div class="kicker">Einführung</div>
   <h2 class="slide-title">Warum jetzt über WebTransport reden?</h2>
   <div class="grid grid-2" style="gap:1em;">
@@ -187,71 +190,71 @@
 </section>
 
 <!-- 4: REISEROUTE -->
-<section class="slide-bg-alt">
+<section data-background-color="#141D2E">
   <div class="kicker">Reiseroute</div>
   <h2 class="slide-title">So läuft der Workshop ab</h2>
   <div class="grid grid-5" style="gap:0.5em;">
-    <div class="card" style="min-height:220px;">
+    <div class="card" style="min-height:210px;">
       <div class="step-num">01</div>
       <p class="body-text" style="font-weight:700;">Warum WebSockets an Grenzen stoßen</p>
       <p class="subtle body-text" style="font-size:0.85em; margin-top:1em;">TCP, Head-of-Line-Blocking</p>
     </div>
-    <div class="card" style="min-height:220px;">
+    <div class="card" style="min-height:210px;">
       <div class="step-num">02</div>
       <p class="body-text" style="font-weight:700;">Wie WebTransport das löst</p>
       <p class="subtle body-text" style="font-size:0.85em; margin-top:1em;">QUIC, Streams vs. Datagrams</p>
     </div>
-    <div class="card" style="min-height:220px;">
+    <div class="card" style="min-height:210px;">
       <div class="step-num">03</div>
       <p class="body-text" style="font-weight:700;">Praxis 1: Stream-Echo</p>
       <p class="subtle body-text" style="font-size:0.85em; margin-top:1em;">Eigener WebTransport-Server &amp; Client</p>
     </div>
-    <div class="card" style="min-height:220px;">
+    <div class="card" style="min-height:210px;">
       <div class="step-num">04</div>
-      <p class="body-text" style="font-weight:700;">Praxis 2: Datagrams</p>
-      <p class="subtle body-text" style="font-size:0.85em; margin-top:1em;">Paketverlust simulieren &amp; vergleichen</p>
+      <p class="body-text" style="font-weight:700;">Praxis 2: Migration</p>
+      <p class="subtle body-text" style="font-size:0.85em; margin-top:1em;">WebSocket-App auf WebTransport umbauen</p>
     </div>
-    <div class="card" style="min-height:220px;">
+    <div class="card" style="min-height:210px;">
       <div class="step-num">05</div>
-      <p class="body-text" style="font-weight:700;">Recap &amp; Ausblick</p>
-      <p class="subtle body-text" style="font-size:0.85em; margin-top:1em;">Wann WebTransport, wann nicht</p>
+      <p class="body-text" style="font-weight:700;">Bonus + Recap</p>
+      <p class="subtle body-text" style="font-size:0.85em; margin-top:1em;">Datagrams, Paketverlust &amp; Ausblick</p>
     </div>
   </div>
 </section>
 
 <!-- 5: HOL BLOCKING -->
-<section class="slide-bg">
+<section data-background-color="#0E1521">
   <div class="kicker">Theorie · Grundlagen</div>
   <h2 class="slide-title">Das Problem: Head-of-Line-Blocking</h2>
-  <p class="body-text" style="margin-bottom:1em;">TCP garantiert eine strikte Reihenfolge aller Bytes einer Verbindung. Geht ein Paket verloren, müssen alle nachfolgenden Pakete warten – auch wenn sie logisch zu einem anderen Datenstrom gehören.</p>
+  <p class="body-text" style="margin-bottom:0.8em;">TCP garantiert eine strikte Reihenfolge aller Bytes einer Verbindung. Geht ein Paket verloren, müssen alle nachfolgenden Pakete warten – auch wenn sie logisch zu einem anderen Datenstrom gehören.</p>
 
-  <p class="subtle body-text" style="font-weight:700; margin-bottom:0.4em;">TCP / WebSocket – 1 Verbindung</p>
-  <div style="display:flex; gap:0.4em; align-items:center; margin-bottom:1em;">
-    <div class="flow-box" style="background:var(--teal); color:var(--bg); width:80px;">A1</div>
-    <div class="flow-box" style="background:var(--coral); color:var(--bg); width:80px;">A2 ✕</div>
-    <div class="flow-box" style="background:var(--card); color:var(--gray); width:80px;">A3</div>
-    <div class="flow-box" style="background:var(--card); color:var(--gray); width:80px;">B1</div>
-    <span class="body-text coral" style="font-style:italic; margin-left:0.8em;">Alles wartet, bis A2 neu übertragen wurde – auch B1</span>
+  <p class="subtle body-text" style="font-weight:700; margin-bottom:0.3em;">TCP / WebSocket – 1 Verbindung</p>
+  <div class="flow-row" style="margin-bottom:0.35em;">
+    <div class="flow-box" style="background:var(--teal); color:var(--bg); width:70px;">A1</div>
+    <div class="flow-box" style="background:var(--coral); color:var(--bg); width:70px;">A2 ✕</div>
+    <div class="flow-box" style="background:var(--card); color:var(--gray); width:70px;">A3</div>
+    <div class="flow-box" style="background:var(--card); color:var(--gray); width:70px;">B1</div>
   </div>
+  <p class="body-text coral" style="font-style:italic; margin-bottom:1em;">Alles wartet, bis A2 neu übertragen wurde – auch B1.</p>
 
-  <p class="subtle body-text" style="font-weight:700; margin-bottom:0.4em;">QUIC / WebTransport – mehrere Streams</p>
-  <div style="display:flex; gap:0.4em; align-items:center; margin-bottom:0.4em;">
-    <span class="subtle body-text" style="width:80px;">Stream A</span>
-    <div class="flow-box" style="background:var(--teal); color:var(--bg); width:80px;">A1</div>
-    <div class="flow-box" style="background:var(--coral); color:var(--bg); width:80px;">A2 ✕</div>
-    <div class="flow-box" style="background:var(--card); color:var(--gray); width:80px;">A3</div>
+  <p class="subtle body-text" style="font-weight:700; margin-bottom:0.3em;">QUIC / WebTransport – mehrere Streams</p>
+  <div class="flow-row" style="margin-bottom:0.3em;">
+    <span class="subtle body-text" style="width:70px;">Stream A</span>
+    <div class="flow-box" style="background:var(--teal); color:var(--bg); width:70px;">A1</div>
+    <div class="flow-box" style="background:var(--coral); color:var(--bg); width:70px;">A2 ✕</div>
+    <div class="flow-box" style="background:var(--card); color:var(--gray); width:70px;">A3</div>
   </div>
-  <div style="display:flex; gap:0.4em; align-items:center;">
-    <span class="subtle body-text" style="width:80px;">Stream B</span>
-    <div class="flow-box" style="background:var(--teal); color:var(--bg); width:80px;">B1</div>
-    <div class="flow-box" style="background:var(--teal); color:var(--bg); width:80px;">B2</div>
-    <div class="flow-box" style="background:var(--teal); color:var(--bg); width:80px;">B3</div>
-    <span class="body-text teal" style="font-style:italic; margin-left:0.8em;">Stream B läuft unabhängig weiter, obwohl A2 verloren ging</span>
+  <div class="flow-row" style="margin-bottom:0.4em;">
+    <span class="subtle body-text" style="width:70px;">Stream B</span>
+    <div class="flow-box" style="background:var(--teal); color:var(--bg); width:70px;">B1</div>
+    <div class="flow-box" style="background:var(--teal); color:var(--bg); width:70px;">B2</div>
+    <div class="flow-box" style="background:var(--teal); color:var(--bg); width:70px;">B3</div>
   </div>
+  <p class="body-text teal" style="font-style:italic;">Stream B läuft unabhängig weiter, obwohl A2 verloren ging.</p>
 </section>
 
 <!-- 6: STREAMS VS DATAGRAMS -->
-<section class="slide-bg-alt">
+<section data-background-color="#141D2E">
   <div class="kicker">Theorie · Grundlagen</div>
   <h2 class="slide-title">Streams vs. Datagrams</h2>
   <div class="grid grid-2" style="gap:1em;">
@@ -281,7 +284,7 @@
 </section>
 
 <!-- 7: WANN WEBSOCKETS -->
-<section class="slide-bg">
+<section data-background-color="#0E1521">
   <div class="kicker">Theorie · Einordnung</div>
   <h2 class="slide-title">Wann bleibt WebSocket die bessere Wahl?</h2>
   <ul class="badge-list" style="font-size:1.1em;">
@@ -294,53 +297,73 @@
 </section>
 
 <!-- 8: PRAXIS 1 -->
-<section class="slide-bg-alt">
-  <div class="kicker">Praxisteil 1 · ~35 Min</div>
-  <h2 class="slide-title">Aufgabe: Stream-Echo-Server</h2>
+<section data-background-color="#141D2E">
+  <div class="kicker">Praxisteil 1 · ~25 Min</div>
+  <h2 class="slide-title">Aufgabe: Stream-Echo</h2>
   <div class="grid grid-2" style="gap:1em;">
     <div>
       <p class="teal body-text" style="font-weight:700;">Ziel</p>
-      <p class="body-text">Einen WebTransport-Server in Node.js aufsetzen, der über einen bidirektionalen Stream Nachrichten vom Client entgegennimmt und zurücksendet (Echo).</p>
+      <p class="body-text">Eine WebTransport-Verbindung aufbauen, die über einen bidirektionalen Stream Nachrichten vom Client entgegennimmt und zurücksendet (Echo).</p>
       <p class="teal body-text" style="font-weight:700; margin-top:1em;">Schritte</p>
       <ul class="badge-list">
-        <li>Zertifikat generieren (Boilerplate liegt bereit)</li>
-        <li>server.js: Session annehmen, Stream öffnen</li>
-        <li>Client: Verbindung aufbauen, Nachricht senden</li>
+        <li>server.js: Echo-Schleife implementieren (Task B)</li>
+        <li>Client: Stream öffnen, senden, lesen (Task A)</li>
         <li>Im Browser (Chrome) testen</li>
       </ul>
     </div>
     <div class="card">
-      <p class="body-text" style="font-weight:700;">⏱ 25 Min. Bearbeitung<br>+ 10 Min. gemeinsamer Review</p>
-      <p class="subtle body-text" style="margin-top:1em;">Boilerplate &amp; Musterlösung liegen im Workshop-Repo bereit (exercise1-streams).</p>
+      <p class="body-text" style="font-weight:700;">⏱ ~20 Min. Bearbeitung<br>+ gemeinsamer Review</p>
+      <p class="subtle body-text" style="margin-top:1em;">Starter mit TODOs &amp; Musterlösung liegen im Workshop-Repo (starter / solution, exercise1-streams).</p>
     </div>
   </div>
 </section>
 
-<!-- 9: PRAXIS 2 -->
-<section class="slide-bg">
-  <div class="kicker">Praxisteil 2 · ~35 Min</div>
-  <h2 class="slide-title">Aufgabe: Datagrams &amp; simulierter Paketverlust</h2>
+<!-- 9: PRAXIS 2 (MIGRATION) -->
+<section data-background-color="#0E1521">
+  <div class="kicker">Praxisteil 2 · ~35 Min · gemeinsam</div>
+  <h2 class="slide-title">Aufgabe: Migration WebSocket → WebTransport</h2>
   <div class="grid grid-2" style="gap:1em;">
     <div>
-      <p class="coral body-text" style="font-weight:700;">Ziel</p>
-      <p class="body-text">Ein Live-Dashboard bauen, das Positions-/Sensordaten per Datagram überträgt – und den Unterschied zu Streams sichtbar machen, wenn künstlich Pakete verloren gehen.</p>
-      <p class="coral body-text" style="font-weight:700; margin-top:1em;">Schritte</p>
-      <ul class="badge-list coral">
-        <li>Datagram-Kanal im bestehenden Server ergänzen</li>
-        <li>Client sendet Positionswerte in Intervallen</li>
-        <li>Verlustsimulation aktivieren &amp; Verhalten beobachten</li>
-        <li>Vergleich: gleiche Aufgabe mit Stream statt Datagram</li>
+      <p class="teal body-text" style="font-weight:700;">Ziel</p>
+      <p class="body-text">Eine fertige WebSocket-Echo-App gemeinsam Schritt für Schritt auf WebTransport umbauen – und dabei die systematische Übersetzung verstehen.</p>
+      <p class="teal body-text" style="font-weight:700; margin-top:1em;">Die Übersetzung</p>
+      <ul class="badge-list">
+        <li><code>new WebSocket(ws://)</code> → <code>new WebTransport(https://)</code> + Stream</li>
+        <li><code>socket.send(str)</code> → <code>writer.write(encode(str))</code></li>
+        <li><code>onmessage</code> → <code>reader.read()</code>-Schleife</li>
       </ul>
     </div>
     <div class="card">
-      <p class="body-text" style="font-weight:700;">⏱ 25 Min. Bearbeitung<br>+ 10 Min. gemeinsamer Review</p>
-      <p class="subtle body-text" style="margin-top:1em;">Bonus für Schnelle: Paketverlust-Rate über einen Regler live einstellbar machen.</p>
+      <p class="body-text" style="font-weight:700;">⏱ ~30 Min. gemeinsam live</p>
+      <p class="subtle body-text" style="margin-top:1em;">WebSocket-„Vorher“ liegt im Repo (websocket-echo, <code>npm run ws-demo</code>). Der Gewinn – kein Head-of-Line-Blocking – wird im Bonus sichtbar.</p>
     </div>
   </div>
 </section>
 
-<!-- 10: RECAP -->
-<section class="slide-bg-alt">
+<!-- 10: BONUS (DATAGRAMS) -->
+<section data-background-color="#141D2E">
+  <div class="kicker">Bonus · für Schnelle</div>
+  <h2 class="slide-title">Datagrams &amp; simulierter Paketverlust</h2>
+  <div class="grid grid-2" style="gap:1em;">
+    <div>
+      <p class="coral body-text" style="font-weight:700;">Ziel</p>
+      <p class="body-text">Mauspositionen per Datagram übertragen und broadcasten – und sichtbar machen, was passiert, wenn künstlich Pakete verloren gehen.</p>
+      <p class="coral body-text" style="font-weight:700; margin-top:1em;">Schritte</p>
+      <ul class="badge-list coral">
+        <li>Client: Datagram senden &amp; empfangen (exercise2)</li>
+        <li>Zwei Tabs öffnen, Maus bewegen</li>
+        <li><code>LOSS_RATE=0.3 npm start</code> – Verhalten beobachten</li>
+      </ul>
+    </div>
+    <div class="card">
+      <p class="body-text" style="font-weight:700;">Kernbotschaft</p>
+      <p class="subtle body-text" style="margin-top:1em;">WebTransport bietet beides über eine Verbindung: zuverlässige Streams UND unzuverlässige Datagrams. WebSocket nur Ersteres.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 11: RECAP -->
+<section data-background-color="#0E1521">
   <div class="kicker">Recap</div>
   <h2 class="slide-title">Was bleibt hängen?</h2>
   <ul class="badge-list" style="font-size:1.05em;">
@@ -351,8 +374,8 @@
   </ul>
 </section>
 
-<!-- 11: AUSBLICK -->
-<section class="slide-bg">
+<!-- 12: AUSBLICK -->
+<section data-background-color="#141D2E">
   <div class="kicker">Ausblick</div>
   <h2 class="slide-title">Wohin entwickelt sich das Thema?</h2>
   <div class="grid grid-3" style="gap:0.7em;">
@@ -371,12 +394,12 @@
   </div>
 </section>
 
-<!-- 12: ABSCHLUSS -->
-<section class="slide-bg-alt">
+<!-- 13: ABSCHLUSS -->
+<section data-background-color="#0E1521">
   <h1 style="font-size:2em; font-weight:800;">Danke!</h1>
   <p class="teal" style="font-size:0.8em; margin-bottom:1em;">Fragen, Feedback &amp; weiterführende Ressourcen</p>
   <ul class="badge-list">
-    <li>Workshop-Repo mit Boilerplate &amp; Musterlösung</li>
+    <li>Workshop-Repo mit Starter &amp; Musterlösung</li>
     <li>MDN: WebTransport API</li>
     <li>FOSDEM 2026: „Intro to WebTransport – The next WebSocket?“ (Max Inden)</li>
   </ul>
