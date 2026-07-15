@@ -28,7 +28,8 @@ stuck.
 - **Node.js** (incl. npm) — a recent LTS.
 - A **Chromium-based browser** (Chrome or Edge). WebTransport support and self-signed
   certs via `serverCertificateHashes` are most reliable there.
-- Build tools for the native module (see the warning below).
+- Build tools for the native module (C/C++ toolchain: Xcode Command Line Tools on macOS,
+  build-essential on Linux, Build Tools on Windows).
 
 ## Setup
 
@@ -42,12 +43,6 @@ its working directory.
 cd starter
 npm install
 ```
-
-> ⚠️ **Test this before the workshop.** `@fails-components/webtransport` compiles a
-> native binary and clones third-party sources during install. It needs a C/C++
-> toolchain (Xcode Command Line Tools on macOS, build-essential on Linux, Build Tools on
-> Windows) and network access to Google's git servers. If `npm install` fails here, you
-> cannot run anything — so verify it works on your machine ahead of time.
 
 ### 2. Generate a self-signed certificate
 
