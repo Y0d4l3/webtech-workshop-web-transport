@@ -84,4 +84,3 @@ LOSS_RATE=0.3 npm start
   certificate and serves it at `/cert-hash`; the clients fetch it and pass it as
   `serverCertificateHashes` to `new WebTransport(...)`. No Chrome launch flags needed.
 - **Clients connect to `127.0.0.1`** (the server binds IPv4), not `localhost`.
-```
