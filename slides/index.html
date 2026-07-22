@@ -26,6 +26,14 @@
 
   .reveal { font-family: 'Inter', sans-serif; color: var(--white); }
   .reveal .slides section { text-align: left; }
+  .reveal .slides section.title {
+    min-height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    text-align: center;
+  }
+  .reveal .slides section.title .stack { width: 42%; margin: 0 auto; }
   .reveal h1, .reveal h2, .reveal h3 {
     font-family: 'JetBrains Mono', monospace;
     text-transform: none;
@@ -58,12 +66,14 @@
     background: var(--card);
     border-radius: 6px;
     padding: 0.6em 0.8em;
+    box-sizing: border-box;
+    overflow-wrap: break-word;
   }
 
   .grid { display: grid; gap: 0.5em; }
-  .grid-2 { grid-template-columns: 1fr 1fr; }
-  .grid-3 { grid-template-columns: repeat(3, 1fr); }
-  .grid-5 { grid-template-columns: repeat(5, 1fr); }
+  .grid-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .grid-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .grid-5 { grid-template-columns: repeat(5, minmax(0, 1fr)); }
 
   /* .reveal prefix so these beat the theme's ".reveal ul" defaults (no double bullets). */
   .reveal .badge-list { list-style: none; padding: 0; margin: 0; }
@@ -130,11 +140,11 @@
 <div class="slides">
 
 <!-- 1: TITLE -->
-<section data-background-color="#0E1521">
-  <div style="margin-top:0.4em;">
+<section class="title" data-background-color="#0E1521">
+  <div>
     <h1 style="font-size:2.4em; font-weight:800; margin-bottom:0.15em;">WebTransport</h1>
     <p style="font-size:0.9em; color:var(--teal); margin-bottom:1.4em;">Eine moderne Alternative zu WebSockets</p>
-    <div style="width:60%;">
+    <div class="stack">
       <div class="stack-box" style="background:var(--teal); color:var(--bg); border:1px solid var(--teal);">HTTP/3</div>
       <div class="stack-box" style="background:var(--card); color:var(--white); border:1px solid var(--teal);">QUIC</div>
       <div class="stack-box" style="background:var(--card); color:var(--white); border:1px solid var(--teal);">UDP</div>
@@ -212,7 +222,7 @@
     <div class="card" style="min-height:210px;">
       <div class="step-num">04</div>
       <p class="body-text" style="font-weight:700;">Praxis 2: Migration</p>
-      <p class="subtle body-text" style="font-size:0.85em; margin-top:1em;">WebSocket-App auf WebTransport umbauen</p>
+      <p class="subtle body-text" style="font-size:0.85em; margin-top:1em;">WebSocket-App umbauen</p>
     </div>
     <div class="card" style="min-height:210px;">
       <div class="step-num">05</div>
@@ -239,13 +249,13 @@
 
   <p class="subtle body-text" style="font-weight:700; margin-bottom:0.3em;">QUIC / WebTransport – mehrere Streams</p>
   <div class="flow-row" style="margin-bottom:0.3em;">
-    <span class="subtle body-text" style="width:70px;">Stream A</span>
+    <span class="subtle body-text" style="margin-right:0.6em; white-space:nowrap;">Stream A</span>
     <div class="flow-box" style="background:var(--teal); color:var(--bg); width:70px;">A1</div>
     <div class="flow-box" style="background:var(--coral); color:var(--bg); width:70px;">A2 ✕</div>
     <div class="flow-box" style="background:var(--card); color:var(--gray); width:70px;">A3</div>
   </div>
   <div class="flow-row" style="margin-bottom:0.4em;">
-    <span class="subtle body-text" style="width:70px;">Stream B</span>
+    <span class="subtle body-text" style="margin-right:0.6em; white-space:nowrap;">Stream B</span>
     <div class="flow-box" style="background:var(--teal); color:var(--bg); width:70px;">B1</div>
     <div class="flow-box" style="background:var(--teal); color:var(--bg); width:70px;">B2</div>
     <div class="flow-box" style="background:var(--teal); color:var(--bg); width:70px;">B3</div>
